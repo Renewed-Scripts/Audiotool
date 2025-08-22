@@ -2,6 +2,7 @@
 using Audiotool.Services;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections;
 
 namespace Audiotool;
 
@@ -11,10 +12,12 @@ namespace Audiotool;
 public partial class MainWindow : Window
 {
     private readonly ThemeManager _themeManager;
+    private readonly NativeAudio _viewModel;
 
     public MainWindow()
     {
-        DataContext = new NativeAudio();
+        _viewModel = new NativeAudio();
+        DataContext = _viewModel;
         _themeManager = ThemeManager.Instance;
         InitializeComponent();
 
@@ -54,6 +57,14 @@ public partial class MainWindow : Window
                     break;
                 }
             }
+        }
+    }
+
+    private void AudioFilesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is DataGrid dataGrid)
+        {
+            _viewModel.SelectedItems = dataGrid.SelectedItems;
         }
     }
 }

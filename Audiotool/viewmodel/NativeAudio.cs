@@ -5,6 +5,8 @@ using Audiotool.model;
 using System.Windows;
 using System.Text.Json;
 using System.IO;
+using System.Collections;
+using System.Linq;
 
 namespace Audiotool.viewmodel;
 
@@ -30,6 +32,18 @@ public class NativeAudio : ViewModelBase
     {
         get { return _selectedAudio; }
         set { _selectedAudio = value; }
+    }
+
+    private IList _selectedItems;
+
+    public IList SelectedItems
+    {
+        get { return _selectedItems; }
+        set
+        {
+            _selectedItems = value;
+            OnPropertyChanged();
+        }
     }
 
     private string _soundSetName;
@@ -123,7 +137,7 @@ public class NativeAudio : ViewModelBase
     private readonly NativeAudioRepo _repo;
 
     public RelayCommand AddFilesCommand => new(execute => SelectAudioFiles(), canExecute => true);
-    public RelayCommand DeleteCommand => new(execute => RemoveAudioFile(), canExecute => SelectedAudio != null);
+    public RelayCommand DeleteCommand => new(execute => RemoveAudioFiles(), canExecute => SelectedItems != null && SelectedItems.Count > 0);
     public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName, DebugFiles, OutputAudioName), canExecute => AudioFiles != null && AudioFiles.Count > 0);
     public RelayCommand OutputFolderCommand => new(execute => SetOutputFolder(), canExecute => true);
     public RelayCommand SaveSettingsCommand => new(execute => SaveSettings(), canExecute => AudioFiles != null && AudioFiles.Count > 0);
@@ -140,7 +154,21 @@ public class NativeAudio : ViewModelBase
         }
     }
 
-    private void RemoveAudioFile() => AudioFiles = _repo.RemoveAudioFile(SelectedAudio.FileName);
+    private void RemoveAudioFiles()
+    {
+        if (SelectedItems == null || SelectedItems.Count == 0) return;
+
+        var itemsToRemove = SelectedItems.Cast<Audio>().ToList();
+        var fileNamesToRemove = itemsToRemove.Select(audio => audio.FileName).ToList();
+
+        foreach (var fileName in fileNamesToRemove)
+        {
+            AudioFiles = _repo.RemoveAudioFile(fileName);
+        }
+
+        SelectedItems = null;
+        SelectedAudio = null;
+    }
 
     private void SelectAudioFiles()
     {

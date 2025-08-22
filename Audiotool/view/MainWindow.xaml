@@ -63,8 +63,10 @@
                     </StackPanel>
 
                     <DataGrid Grid.Row="1"
+                              x:Name="AudioFilesDataGrid"
                               ItemsSource="{Binding AudioFiles}"
                               SelectedItem="{Binding SelectedAudio}"
+                              SelectionMode="Extended"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
@@ -74,7 +76,8 @@
                               GridLinesVisibility="Horizontal"
                               RowHeaderWidth="0"
                               Style="{StaticResource ThemedDataGridStyle}"
-                              BorderThickness="1">
+                              BorderThickness="1"
+                              SelectionChanged="AudioFilesDataGrid_SelectionChanged">
 
                         <DataGrid.Resources>
                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ThemedDataGridColumnHeader}"/>
@@ -123,7 +126,7 @@
                         <Button Content="Remove Selected"
                                 Command="{Binding DeleteCommand}"
                                 Style="{StaticResource DangerButtonStyle}"
-                                ToolTip="Remove the selected audio file from your project"/>
+                                ToolTip="Remove the selected audio files from your project (supports multi-selection)"/>
                     </StackPanel>
                 </Grid>
             </Border>
