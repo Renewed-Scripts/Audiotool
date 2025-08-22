@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Audiotool.builders;
 using Audiotool.Converters;
-using System.Linq;
-using System.Windows.Threading;
 using System.Windows;
 
 namespace Audiotool.repository;
@@ -60,6 +58,11 @@ public class NativeAudioRepo
 
 
         return new ObservableCollection<Audio>(AudioFiles);
+    }
+
+    public void ClearAudioFiles()
+    {
+        AudioFiles.Clear();
     }
 
     private static void CreateFolders(string path, string dataPath, string audioDirectoryPath, string wavPath)
