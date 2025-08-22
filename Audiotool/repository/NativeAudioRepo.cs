@@ -1,4 +1,4 @@
-﻿using Audiotool.model;
+using Audiotool.model;
 using FFMpegCore;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -38,11 +38,11 @@ public class NativeAudioRepo
             SampleRate = info.PrimaryAudioStream.SampleRateHz,
             Duration = info.Duration,
             Channels = info.PrimaryAudioStream.Channels,
-            FileSize = (ulong)(info.PrimaryAudioStream.BitRate * info.Duration.TotalSeconds * info.PrimaryAudioStream.Channels)
+            FileSize = (ulong)new FileInfo(path).Length
         };
 
 
-       AudioFiles.Add(audioFile);
+        AudioFiles.Add(audioFile);
     }
 
     public ObservableCollection<Audio> GetAudioFiles() => new(AudioFiles);
