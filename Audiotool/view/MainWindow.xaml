@@ -1,168 +1,47 @@
-﻿<Window x:Class="Audiotool.MainWindow"
+<Window x:Class="Audiotool.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Audiotool"
         mc:Ignorable="d"
-        Title="FiveM Audiotool" Height="800" Width="1200"
-        MinHeight="800" MinWidth="1200"
-        ResizeMode="NoResize"
+        Title="FiveM Audiotool" Height="900" Width="1300"
+        MinHeight="600" MinWidth="900"
+        ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#2C3E50"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#3498DB"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2980B9"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#21618C"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#95A5A6"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#7F8C8D"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#566573"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="DangerButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#E74C3C"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#C0392B"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#A93226"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="SuccessButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#27AE60"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#229954"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1E8449"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="8,6"/>
-            <Setter Property="BorderBrush" Value="#BDC3C7"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="12"/>
-        </Style>
-
-        <Style x:Key="PanelStyle" TargetType="Border">
-            <Setter Property="Background" Value="#FAFBFC"/>
-            <Setter Property="BorderBrush" Value="#E1E8ED"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Padding" Value="15"/>
-            <Setter Property="Margin" Value="5"/>
-        </Style>
-    </Window.Resources>
-
-    <Grid Background="#F8F9FA">
+    <Grid Background="{DynamicResource PrimaryBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="#34495E" Padding="20,12">
-            <TextBlock Text="FiveM Audiotool"
-                       FontSize="18"
-                       FontWeight="Bold"
-                       Foreground="White"/>
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="FiveM Audiotool"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource WhiteTextBrush}"
+                           VerticalAlignment="Center"/>
+
+                <ComboBox Grid.Column="1"
+                          x:Name="ThemeComboBox"
+                          Width="100"
+                          Height="32"
+                          VerticalContentAlignment="Center"
+                          Style="{StaticResource ThemedComboBoxStyle}"
+                          SelectionChanged="ThemeComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Dark" Tag="Dark" Style="{StaticResource ThemedComboBoxItemStyle}"/>
+                    <ComboBoxItem Content="Light" Tag="Light" Style="{StaticResource ThemedComboBoxItemStyle}"/>
+                </ComboBox>
+            </Grid>
         </Border>
 
         <Grid Grid.Row="1" Margin="20">
@@ -194,25 +73,13 @@
                               HeadersVisibility="Column"
                               GridLinesVisibility="Horizontal"
                               RowHeaderWidth="0"
-                              AlternatingRowBackground="#F7F9FC"
-                              BorderThickness="1"
-                              BorderBrush="#E1E8ED">
+                              Style="{StaticResource ThemedDataGridStyle}"
+                              BorderThickness="1">
 
                         <DataGrid.Resources>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="#34495E"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Padding" Value="8"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="FontSize" Value="11"/>
-                                <Setter Property="BorderThickness" Value="0,0,1,0"/>
-                                <Setter Property="BorderBrush" Value="#2C3E50"/>
-                            </Style>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="Padding" Value="8,4"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource ThemedDataGridColumnHeader}"/>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource ThemedDataGridCell}"/>
+                            <Style TargetType="DataGridRow" BasedOn="{StaticResource ThemedDataGridRow}"/>
                         </DataGrid.Resources>
 
                         <DataGrid.Columns>
@@ -262,7 +129,8 @@
             </Border>
 
             <Border Grid.Column="1" Style="{StaticResource PanelStyle}" Margin="10,0,0,0">
-                <StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
                     <TextBlock Text="Settings Management" Style="{StaticResource HeaderTextStyle}"/>
                     <StackPanel Margin="0,0,0,20">
                         <Button Content="Save Settings"
@@ -291,7 +159,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Soundset Name:"
-                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"/>
+                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBox Grid.Row="0" Grid.Column="1"
                                  Text="{Binding SoundSetName}"
                                  Style="{StaticResource InputTextBoxStyle}"
@@ -299,7 +168,8 @@
                                  ToolTip="Name of the sound set used in game scripts"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Audiobank Name:"
-                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"/>
+                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBox Grid.Row="1" Grid.Column="1"
                                  Text="{Binding AudioBankName}"
                                  Style="{StaticResource InputTextBoxStyle}"
@@ -307,7 +177,8 @@
                                  ToolTip="Name of the audio bank file (.awc) that will be generated"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Audio Data Name:"
-                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"/>
+                                   VerticalAlignment="Center" Margin="0,0,10,8" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBox Grid.Row="2" Grid.Column="1"
                                  Text="{Binding AudioDataFileName}"
                                  Style="{StaticResource InputTextBoxStyle}"
@@ -322,7 +193,8 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Output Audio Name:"
-                                   VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold"/>
+                                   VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBox Grid.Column="1"
                                  Text="{Binding OutputAudioName}"
                                  Style="{StaticResource InputTextBoxStyle}"
@@ -333,19 +205,20 @@
                               Content="Include Debug Files"
                               FontWeight="SemiBold"
                               FontSize="12"
-                              Foreground="#2C3E50"
+                              Style="{StaticResource ThemedCheckBoxStyle}"
                               Margin="0,0,0,15"
                               VerticalAlignment="Center"
                               ToolTip="Include debug files in build (output.awc.xml, dat54.rel.xml, awc.nametable, wav folder)"/>
 
                     <TextBlock Text="Output Settings" Style="{StaticResource HeaderTextStyle}"/>
                     <StackPanel Margin="0,0,0,20">
-                        <TextBlock Text="Output Path:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock Text="Output Path:" FontWeight="SemiBold" Margin="0,0,0,5"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBox Text="{Binding OutputPath}"
                                  IsReadOnly="True"
                                  Style="{StaticResource InputTextBoxStyle}"
-                                 Background="#EAECEE"
-                                 Margin="0,0,0,8"/>
+                                 Margin="0,0,0,8"
+                                 Opacity="0.7"/>
                         <Button Content="Choose Output Folder"
                                 Command="{Binding OutputFolderCommand}"
                                 Style="{StaticResource SecondaryButtonStyle}"
@@ -353,7 +226,12 @@
                                 ToolTip="Select where to save the generated audio resource files"/>
                     </StackPanel>
 
-                    <Border Background="#E8F5E8" BorderBrush="#27AE60" BorderThickness="1" CornerRadius="4" Padding="15" Margin="0,10,0,0">
+                    <Border Background="{DynamicResource SecondaryBackgroundBrush}"
+                            BorderBrush="{DynamicResource SuccessButtonBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="15"
+                            Margin="0,10,0,0">
                         <StackPanel>
                             <TextBlock Text="Build Resource" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,10"/>
                             <Button Content="Build Audio Resource"
@@ -366,11 +244,16 @@
                         </StackPanel>
                     </Border>
 
-                </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
 
-        <Border Grid.Row="2" Background="#ECF0F1" BorderBrush="#BDC3C7" BorderThickness="0,1,0,0" Padding="20,8">
+        <Border Grid.Row="2"
+                Background="{DynamicResource FooterBackgroundBrush}"
+                BorderBrush="{DynamicResource FooterBorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="20,8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -381,14 +264,18 @@
                            Text="Ready - Select audio files to begin building your resource"
                            VerticalAlignment="Center"
                            FontSize="11"
-                           Foreground="#7F8C8D"/>
+                           Foreground="{DynamicResource PrimaryTextBrush}"
+                           Opacity="0.7"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <TextBlock Text="Files: " FontSize="11" Foreground="#7F8C8D" VerticalAlignment="Center"/>
+                    <TextBlock Text="Files: " FontSize="11"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               VerticalAlignment="Center"
+                               Opacity="0.7"/>
                     <TextBlock Text="{Binding AudioFiles.Count}"
                                FontSize="11"
                                FontWeight="SemiBold"
-                               Foreground="#2C3E50"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
