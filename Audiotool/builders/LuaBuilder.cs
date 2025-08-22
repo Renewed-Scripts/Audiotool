@@ -21,6 +21,15 @@ namespace Audiotool.builders;
         ""
     ];
 
+    private static readonly int _manifestHeaderCount = _manifest.Count;
+
+    // Checks for all added files in the manifest and removes any that are not part of the header.
+    private static void ResetManifestFiles()
+    {
+        if (_manifest.Count > _manifestHeaderCount)
+            _manifest.RemoveRange(_manifestHeaderCount, _manifest.Count - _manifestHeaderCount);
+    }
+
     private readonly static List<string> _clientFile = [];
 
 
@@ -77,6 +86,8 @@ namespace Audiotool.builders;
 
     public static void GenerateManifest(string outputPath, List<Audio> AudioFiles, bool debugFiles, string SoundSetName)
     {
+        ResetManifestFiles();
+
         string awcFileName = AwcFileName + ".awc";
 
         _manifest.Add("files {");
