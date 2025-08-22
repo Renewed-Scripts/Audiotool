@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Audiotool"
         mc:Ignorable="d"
-        Title="FiveM Audiotool" Height="600" Width="1200"
-        MinHeight="500" MinWidth="1000"
+        Title="FiveM Audiotool" Height="740" Width="1200"
+        MinHeight="740" MinWidth="1200"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
