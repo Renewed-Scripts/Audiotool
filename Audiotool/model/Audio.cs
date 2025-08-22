@@ -1,4 +1,4 @@
-﻿using System.Xml;
+using System.Xml;
 
 namespace Audiotool.model;
 
@@ -42,7 +42,7 @@ public class Audio
     
     public List<XmlNode> GenerateXML(XmlDocument doc)
     {
-        if (FileSize >= 1.5 * 1024 * 1024)
+        if (FileSize > (1.5 * 8 * 1024 * 1024))
         {
             streamFormat = true;
         }

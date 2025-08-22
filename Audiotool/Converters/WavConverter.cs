@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using Audiotool.model;
 using FFMpegCore;
@@ -8,12 +8,13 @@ namespace Audiotool.Converters;
 public static class WavConverter
 {
     public static void ConvertToWav(List<Audio> audioFiles, string outputFolder)
-    {   
+    {
         foreach (Audio audio in audioFiles)
         {
+            string outputPath = Path.Combine(outputFolder, $"{audio.FileName}.wav");
+
             if (audio.FileExtension != "wav")
             {
-                string outputPath = Path.Combine(outputFolder, $"{audio.FileName}.wav");
                 FFMpegArguments ff = FFMpegArguments
                     .FromFileInput(audio.FilePath);
                 _ = ff.OutputToFile(outputPath, true, opt =>
@@ -27,9 +28,13 @@ public static class WavConverter
                     if (audio.Channels != 1)
                         opt.WithCustomArgument("-ac 1");
                 }).ProcessSynchronously();
-
-                audio.FileSize = (ulong)new FileInfo(outputPath).Length; //; (long)(info.PrimaryAudioStream.BitRate * info.Duration.TotalSeconds * info.PrimaryAudioStream.Channels);
             }
+            else
+            {
+                File.Copy(audio.FilePath, outputPath, true);
+            }
+
+            audio.FileSize = (ulong)new FileInfo(outputPath).Length;
         }
     }
 }
