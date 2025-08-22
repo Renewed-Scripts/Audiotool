@@ -1,5 +1,4 @@
 ﻿using Audiotool.model;
-using System.Collections.ObjectModel;
 using System.IO;
 
 namespace Audiotool.builders;
@@ -31,14 +30,9 @@ namespace Audiotool.builders;
     }
 
     private readonly static List<string> _clientFile = [];
-
-
     public static string RelRootFolder { get; set; } = "data";
-
     public static string RelFileName { get; set; } = "audioexample_sounds.dat54.rel";
-
     public static string AwcRootFolder { get; set; } = "audiodirectory";
-
     public static string AwcFileName { get; set; } = "custom_sounds";
 
     private static void GenerateClientFile(List<Audio> AudioFiles, string soundSetName)

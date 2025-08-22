@@ -1,21 +1,13 @@
 using Audiotool.model;
 using CodeWalker.GameFiles;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace Audiotool.builders;
 
 public static class Dat54Builder
 {
-
     public static void LoadAndSaveRelFromXmlDocument(XmlDocument doc, string outputFolder, string audioDataFileName = "audioexample_sounds")
     {
         RelFile rel = XmlRel.GetRel(doc);

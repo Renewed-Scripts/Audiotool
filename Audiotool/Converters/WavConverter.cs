@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.IO;
 using Audiotool.model;
 using FFMpegCore;
