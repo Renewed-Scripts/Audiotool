@@ -87,6 +87,8 @@
             <Label Grid.Column="4" Content="Soundset Name" HorizontalAlignment="Left" Margin="13,20,0,0" VerticalAlignment="Top" Grid.RowSpan="2"/>
             <TextBox Grid.Column="4" HorizontalAlignment="Left" Margin="4,59,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding AudioBankName}" VerticalAlignment="Top" Width="120"/>
             <Label Grid.Column="4" Content="Audiobank Name" HorizontalAlignment="Left" Margin="13,36,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+            <TextBox Grid.Column="4" HorizontalAlignment="Left" Margin="4,105,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding AudioDataFileName}" VerticalAlignment="Top" Width="120"/>
+            <Label Grid.Column="4" Content="Audio Data Name" HorizontalAlignment="Left" Margin="13,82,0,0" VerticalAlignment="Top" Grid.Row="1"/>
             <TextBox Grid.Column="4" HorizontalAlignment="Left" Margin="4,197,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding OutputPath}" IsReadOnly="True" VerticalAlignment="Top" Width="120"/>
             <Button Grid.Column="4" Command="{Binding OutputFolderCommand}" Content="Set Output Folder" HorizontalAlignment="Left" Margin="9,328,0,0" Grid.Row="1" VerticalAlignment="Top"/>
             <Label Grid.Column="4" Content="Output Path" HorizontalAlignment="Left" Margin="24,0,0,0" VerticalAlignment="Center" Grid.Row="1"/>

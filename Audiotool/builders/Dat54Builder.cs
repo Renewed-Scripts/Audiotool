@@ -1,4 +1,4 @@
-﻿using Audiotool.model;
+using Audiotool.model;
 using CodeWalker.GameFiles;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Audiotool.builders;
 public static class Dat54Builder
 {
 
-    public static void LoadAndSaveRelFromXmlDocument(XmlDocument doc, string outputFolder)
+    public static void LoadAndSaveRelFromXmlDocument(XmlDocument doc, string outputFolder, string audioDataFileName = "audioexample_sounds")
     {
         RelFile rel = XmlRel.GetRel(doc);
         if (rel == null)
@@ -33,7 +33,7 @@ public static class Dat54Builder
             return;
         }
 
-        string finalPath = Path.Combine(outputFolder, "audioexample_sounds.dat54.rel");
+        string finalPath = Path.Combine(outputFolder, $"{audioDataFileName}.dat54.rel");
         File.WriteAllBytes(finalPath, relData);
     }
 
@@ -43,10 +43,11 @@ public static class Dat54Builder
         string outputFolder,
         string audioBankName = "output",
         string soundsetName = "special_soundset",
-        string outputFileName = "audioexample_sounds.dat54.rel.xml")
+        string audioDataFileName = "audioexample_sounds")
     {
 
         string dataDirectory = Path.Combine(outputFolder, "data");
+        string outputFileName = $"{audioDataFileName}.dat54.rel.xml";
 
         var doc = new XmlDocument();
         var dat54Elem = doc.CreateElement("Dat54");
@@ -89,7 +90,7 @@ public static class Dat54Builder
             headerElem.AppendChild(volumeElem);
 
             var categoryElem = doc.CreateElement("Category");
-            categoryElem.InnerText = "scripted";
+            categoryElem.InnerText = audio.Volume > 200 ? "scripted_louder" : "scripted";
             headerElem.AppendChild(categoryElem);
 
             var containerNameElem = doc.CreateElement("ContainerName");
@@ -146,6 +147,6 @@ public static class Dat54Builder
 
 
 
-        LoadAndSaveRelFromXmlDocument(doc, dataDirectory);
+        LoadAndSaveRelFromXmlDocument(doc, dataDirectory, audioDataFileName);
     }
 }

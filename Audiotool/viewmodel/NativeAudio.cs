@@ -69,10 +69,20 @@ public class NativeAudio : ViewModelBase
         }
     }
 
+    private string _audioDataFileName;
 
-
-
-
+    public string AudioDataFileName
+    {
+        get
+        {
+            return _audioDataFileName;
+        }
+        set
+        {
+            _audioDataFileName = value;
+            OnPropertyChanged();
+        }
+    }
 
     private readonly NativeAudioRepo _repo;
 
@@ -80,7 +90,7 @@ public class NativeAudio : ViewModelBase
 
     public RelayCommand DeleteCommand => new(execute => RemoveAudioFile(), canExecute => SelectedAudio != null);
 
-    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles), canExecute => AudioFiles != null && AudioFiles.Count > 0);
+    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName), canExecute => AudioFiles != null && AudioFiles.Count > 0);
 
     public RelayCommand OutputFolderCommand => new(execute => SetOutputFolder(), canExecute => true);
 
@@ -121,6 +131,8 @@ public class NativeAudio : ViewModelBase
     {
         SoundSetName = "special_soundset";
         AudioBankName = "custom_sounds";
+        AudioDataFileName = "audioexample_sounds";
         _repo = new NativeAudioRepo();
+        AudioFiles = _repo.GetAudioFiles();
     }
 }

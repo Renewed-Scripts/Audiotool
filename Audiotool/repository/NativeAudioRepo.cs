@@ -85,7 +85,7 @@ public class NativeAudioRepo
         }
     }
 
-    public void BuildAWC(string SoundSet, string AudioBank, string? folderPath, ObservableCollection<Audio> _newList, bool debugFiles = true)
+    public void BuildAWC(string SoundSet, string AudioBank, string? folderPath, ObservableCollection<Audio> _newList, string audioDataFileName = "audioexample_sounds", bool debugFiles = true)
     {
         string path = Path.Combine(folderPath ?? AppContext.BaseDirectory, "Renewed-Audio");
         string wavPath = Path.Combine(path, "wav");
@@ -104,12 +104,13 @@ public class NativeAudioRepo
         }
 
         WavConverter.ConvertToWav(AudioFiles, wavPath);
-        Dat54Builder.ConstructDat54(AudioFiles, path, AudioBank, SoundSet);
+        Dat54Builder.ConstructDat54(AudioFiles, path, AudioBank, SoundSet, audioDataFileName);
         AWCBuilder.GenerateXML(AudioFiles, audioDirectoryPath, wavPath, AudioBank);
 
         LuaBuilder.AwcFileName = AudioBank;
+        LuaBuilder.RelFileName = $"{audioDataFileName}.dat54.rel";
 
-        LuaBuilder.GenerateManifest(path, AudioFiles, true, SoundSet);
+        LuaBuilder.GenerateManifest(path, AudioFiles, true, SoundSet, audioDataFileName);
 
         MessageBox.Show("Resource has been build!");
     }

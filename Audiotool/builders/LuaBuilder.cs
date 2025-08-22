@@ -84,7 +84,7 @@ namespace Audiotool.builders;
         _clientFile.Add("end, false)");
     }
 
-    public static void GenerateManifest(string outputPath, List<Audio> AudioFiles, bool debugFiles, string SoundSetName)
+    public static void GenerateManifest(string outputPath, List<Audio> AudioFiles, bool debugFiles, string SoundSetName, string audioDataFileName = "audioexample_sounds")
     {
         ResetManifestFiles();
 
@@ -97,7 +97,7 @@ namespace Audiotool.builders;
         _manifest.Add("");
 
         _manifest.Add($"data_file 'AUDIO_WAVEPACK'  '{AwcRootFolder}'");
-        _manifest.Add($"data_file 'AUDIO_SOUNDDATA' '{RelRootFolder}/audioexample_sounds.dat'");
+        _manifest.Add($"data_file 'AUDIO_SOUNDDATA' '{RelRootFolder}/{audioDataFileName}.dat'");
 
 
         if (debugFiles)
