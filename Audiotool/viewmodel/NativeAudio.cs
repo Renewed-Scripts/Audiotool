@@ -86,6 +86,17 @@ public class NativeAudio : ViewModelBase
         }
     }
 
+    private string _outputAudioName;
+    public string OutputAudioName
+    {
+        get { return _outputAudioName; }
+        set
+        {
+            _outputAudioName = value;
+            OnPropertyChanged();
+        }
+    }
+
     private bool _debugFiles;
 
     public bool DebugFiles
@@ -113,7 +124,7 @@ public class NativeAudio : ViewModelBase
 
     public RelayCommand AddFilesCommand => new(execute => SelectAudioFiles(), canExecute => true);
     public RelayCommand DeleteCommand => new(execute => RemoveAudioFile(), canExecute => SelectedAudio != null);
-    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName, DebugFiles), canExecute => AudioFiles != null && AudioFiles.Count > 0);
+    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName, DebugFiles, OutputAudioName), canExecute => AudioFiles != null && AudioFiles.Count > 0);
     public RelayCommand OutputFolderCommand => new(execute => SetOutputFolder(), canExecute => true);
     public RelayCommand SaveSettingsCommand => new(execute => SaveSettings(), canExecute => AudioFiles != null && AudioFiles.Count > 0);
     public RelayCommand LoadSettingsCommand => new(execute => LoadSettings(), canExecute => true);
@@ -170,6 +181,7 @@ public class NativeAudio : ViewModelBase
         SoundSetName = "special_soundset";
         AudioBankName = "custom_sounds";
         AudioDataFileName = "audioexample_sounds";
+        OutputAudioName = "Renewed-Audio";
         DebugFiles = true;
         LastLoadedSettingsPath = "";
         _repo = new NativeAudioRepo();
@@ -220,6 +232,7 @@ public class NativeAudio : ViewModelBase
                     AudioBankName = AudioBankName,
                     AudioDataFileName = AudioDataFileName,
                     OutputPath = OutputPath ?? "",
+                    OutputAudioName = OutputAudioName,
                     AudioFiles = AudioFiles?.Select(audio => new AudioFileSettings
                     {
                         FilePath = audio.FilePath,
@@ -307,6 +320,7 @@ public class NativeAudio : ViewModelBase
             AudioBankName = settings.AudioBankName ?? "custom_sounds";
             AudioDataFileName = settings.AudioDataFileName ?? "audioexample_sounds";
             OutputPath = settings.OutputPath ?? "";
+            OutputAudioName = settings.OutputAudioName ?? "Renewed-Audio";
 
             var loadedFiles = 0;
             var missingFiles = new List<string>();

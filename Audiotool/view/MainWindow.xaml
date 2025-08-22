@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Audiotool"
         mc:Ignorable="d"
-        Title="FiveM Audiotool" Height="760" Width="1200"
-        MinHeight="760" MinWidth="1200"
+        Title="FiveM Audiotool" Height="800" Width="1200"
+        MinHeight="800" MinWidth="1200"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
@@ -313,6 +313,20 @@
                                  Style="{StaticResource InputTextBoxStyle}"
                                  Margin="0,0,0,8"
                                  ToolTip="Base name for generated audio data files (avoids conflicts with other mods)"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Output Audio Name:"
+                                   VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold"/>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding OutputAudioName}"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 ToolTip="Name of the final resource folder (default: Renewed-Audio)"/>
                     </Grid>
 
                     <CheckBox IsChecked="{Binding DebugFiles}"

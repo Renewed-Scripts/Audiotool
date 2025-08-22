@@ -6,6 +6,7 @@ public class BuildSettings
     public string AudioBankName { get; set; } = "custom_sounds";
     public string AudioDataFileName { get; set; } = "audioexample_sounds";
     public string OutputPath { get; set; } = "";
+    public string OutputAudioName { get; set; } = "Renewed-Audio";
     public List<AudioFileSettings> AudioFiles { get; set; } = new List<AudioFileSettings>();
 }
 
