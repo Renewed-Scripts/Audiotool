@@ -86,6 +86,18 @@ public class NativeAudio : ViewModelBase
         }
     }
 
+    private bool _debugFiles;
+
+    public bool DebugFiles
+    {
+        get { return _debugFiles; }
+        set
+        {
+            _debugFiles = value;
+            OnPropertyChanged();
+        }
+    }
+
     private string _lastLoadedSettingsPath;
     public string LastLoadedSettingsPath
     {
@@ -101,9 +113,9 @@ public class NativeAudio : ViewModelBase
 
     public RelayCommand AddFilesCommand => new(execute => SelectAudioFiles(), canExecute => true);
     public RelayCommand DeleteCommand => new(execute => RemoveAudioFile(), canExecute => SelectedAudio != null);
-    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName), canExecute => AudioFiles != null && AudioFiles.Count > 0);
+    public RelayCommand ExportCommand => new(execute => _repo.BuildAWC(SoundSetName, AudioBankName, OutputPath, AudioFiles, AudioDataFileName, DebugFiles), canExecute => AudioFiles != null && AudioFiles.Count > 0);
     public RelayCommand OutputFolderCommand => new(execute => SetOutputFolder(), canExecute => true);
-    public RelayCommand SaveSettingsCommand => new(execute => SaveSettings(), canExecute => true);
+    public RelayCommand SaveSettingsCommand => new(execute => SaveSettings(), canExecute => AudioFiles != null && AudioFiles.Count > 0);
     public RelayCommand LoadSettingsCommand => new(execute => LoadSettings(), canExecute => true);
 
     private void SetOutputFolder()
@@ -158,6 +170,7 @@ public class NativeAudio : ViewModelBase
         SoundSetName = "special_soundset";
         AudioBankName = "custom_sounds";
         AudioDataFileName = "audioexample_sounds";
+        DebugFiles = true;
         LastLoadedSettingsPath = "";
         _repo = new NativeAudioRepo();
         AudioFiles = _repo.GetAudioFiles();
@@ -284,75 +297,75 @@ public class NativeAudio : ViewModelBase
     }
 
     private void LoadSettingsFromObject(BuildSettings settings)
+    {
+        try
         {
-            try
+            _repo.ClearAudioFiles();
+            AudioFiles = new ObservableCollection<Audio>();
+
+            SoundSetName = settings.SoundSetName ?? "special_soundset";
+            AudioBankName = settings.AudioBankName ?? "custom_sounds";
+            AudioDataFileName = settings.AudioDataFileName ?? "audioexample_sounds";
+            OutputPath = settings.OutputPath ?? "";
+
+            var loadedFiles = 0;
+            var missingFiles = new List<string>();
+
+            foreach (var audioFileSettings in settings.AudioFiles)
             {
-                _repo.ClearAudioFiles();
-                AudioFiles = new ObservableCollection<Audio>();
-
-                SoundSetName = settings.SoundSetName ?? "special_soundset";
-                AudioBankName = settings.AudioBankName ?? "custom_sounds";
-                AudioDataFileName = settings.AudioDataFileName ?? "audioexample_sounds";
-                OutputPath = settings.OutputPath ?? "";
-
-                var loadedFiles = 0;
-                var missingFiles = new List<string>();
-
-                foreach (var audioFileSettings in settings.AudioFiles)
+                if (File.Exists(audioFileSettings.FilePath))
                 {
-                    if (File.Exists(audioFileSettings.FilePath))
+                    try
                     {
-                        try
-                        {
-                            Task.Run(async () => await _repo.AddAudioFile(audioFileSettings.FilePath)).GetAwaiter().GetResult();
-                            loadedFiles++;
-                        }
-                        catch (Exception ex)
-                        {
-                            missingFiles.Add($"{audioFileSettings.FileName}: {ex.Message}");
-                        }
+                        Task.Run(async () => await _repo.AddAudioFile(audioFileSettings.FilePath)).GetAwaiter().GetResult();
+                        loadedFiles++;
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        missingFiles.Add($"{audioFileSettings.FileName}: File not found at {audioFileSettings.FilePath}");
+                        missingFiles.Add($"{audioFileSettings.FileName}: {ex.Message}");
                     }
                 }
-
-                AudioFiles = _repo.GetAudioFiles();
-
-                foreach (var audio in AudioFiles)
+                else
                 {
-                    var savedSettings = settings.AudioFiles.FirstOrDefault(s => s.FileName == audio.FileName);
-                    if (savedSettings != null)
-                    {
-                        audio.Volume = savedSettings.Volume;
-                        audio.Headroom = savedSettings.Headroom;
-                        audio.PlayBegin = savedSettings.PlayBegin;
-                        audio.PlayEnd = savedSettings.PlayEnd;
-                        audio.LoopBegin = savedSettings.LoopBegin;
-                        audio.LoopEnd = savedSettings.LoopEnd;
-                        audio.LoopPoint = savedSettings.LoopPoint;
-                        audio.Peak = savedSettings.Peak;
-                    }
+                    missingFiles.Add($"{audioFileSettings.FileName}: File not found at {audioFileSettings.FilePath}");
                 }
-
-                var message = $"Settings loaded successfully!\nLoaded {loadedFiles} audio files.";
-
-                if (missingFiles.Any())
-                {
-                    message += $"\n\nWarning: {missingFiles.Count} files could not be loaded:\n" + string.Join("\n", missingFiles.Take(5));
-
-                    if (missingFiles.Count > 5)
-                    {
-                        message += $"\n... and {missingFiles.Count - 5} more files.";
-                    }
-                }
-
-                MessageBox.Show(message, "Load Settings", MessageBoxButton.OK, missingFiles.Any() ? MessageBoxImage.Warning : MessageBoxImage.Information);
             }
-            catch (Exception ex)
+
+            AudioFiles = _repo.GetAudioFiles();
+
+            foreach (var audio in AudioFiles)
             {
-                MessageBox.Show($"Error loading settings: {ex.Message}", "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var savedSettings = settings.AudioFiles.FirstOrDefault(s => s.FileName == audio.FileName);
+                if (savedSettings != null)
+                {
+                    audio.Volume = savedSettings.Volume;
+                    audio.Headroom = savedSettings.Headroom;
+                    audio.PlayBegin = savedSettings.PlayBegin;
+                    audio.PlayEnd = savedSettings.PlayEnd;
+                    audio.LoopBegin = savedSettings.LoopBegin;
+                    audio.LoopEnd = savedSettings.LoopEnd;
+                    audio.LoopPoint = savedSettings.LoopPoint;
+                    audio.Peak = savedSettings.Peak;
+                }
             }
+
+            var message = $"Settings loaded successfully!\nLoaded {loadedFiles} audio files.";
+
+            if (missingFiles.Any())
+            {
+                message += $"\n\nWarning: {missingFiles.Count} files could not be loaded:\n" + string.Join("\n", missingFiles.Take(5));
+
+                if (missingFiles.Count > 5)
+                {
+                    message += $"\n... and {missingFiles.Count - 5} more files.";
+                }
+            }
+
+            MessageBox.Show(message, "Load Settings", MessageBoxButton.OK, missingFiles.Any() ? MessageBoxImage.Warning : MessageBoxImage.Information);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading settings: {ex.Message}", "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
 }

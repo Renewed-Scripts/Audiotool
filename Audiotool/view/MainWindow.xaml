@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Audiotool"
         mc:Ignorable="d"
-        Title="FiveM Audiotool" Height="740" Width="1200"
-        MinHeight="740" MinWidth="1200"
+        Title="FiveM Audiotool" Height="760" Width="1200"
+        MinHeight="760" MinWidth="1200"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
@@ -314,6 +314,15 @@
                                  Margin="0,0,0,8"
                                  ToolTip="Base name for generated audio data files (avoids conflicts with other mods)"/>
                     </Grid>
+
+                    <CheckBox IsChecked="{Binding DebugFiles}"
+                              Content="Include Debug Files"
+                              FontWeight="SemiBold"
+                              FontSize="12"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,15"
+                              VerticalAlignment="Center"
+                              ToolTip="Include debug files in build (output.awc.xml, dat54.rel.xml, awc.nametable, wav folder)"/>
 
                     <TextBlock Text="Output Settings" Style="{StaticResource HeaderTextStyle}"/>
                     <StackPanel Margin="0,0,0,20">

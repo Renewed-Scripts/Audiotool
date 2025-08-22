@@ -90,32 +90,77 @@ public class NativeAudioRepo
 
     public void BuildAWC(string SoundSet, string AudioBank, string? folderPath, ObservableCollection<Audio> _newList, string audioDataFileName = "audioexample_sounds", bool debugFiles = true)
     {
-        string path = Path.Combine(folderPath ?? AppContext.BaseDirectory, "Renewed-Audio");
-        string wavPath = Path.Combine(path, "wav");
-        string dataPath = Path.Combine(path, "data");
-        string audioDirectoryPath = Path.Combine(path, "audiodirectory");
-
-        CreateFolders(path, dataPath, audioDirectoryPath, wavPath);
-
-        if (debugFiles)
+        try
         {
-            string clientPath = Path.Combine(path, "client");
-            if (!Directory.Exists(clientPath))
+            string path = Path.Combine(folderPath ?? AppContext.BaseDirectory, "Renewed-Audio");
+            string wavPath = Path.Combine(path, "wav");
+            string dataPath = Path.Combine(path, "data");
+            string audioDirectoryPath = Path.Combine(path, "audiodirectory");
+
+            CreateFolders(path, dataPath, audioDirectoryPath, wavPath);
+
+            if (debugFiles)
             {
-                Directory.CreateDirectory(clientPath);
+                string clientPath = Path.Combine(path, "client");
+                if (!Directory.Exists(clientPath))
+                {
+                    Directory.CreateDirectory(clientPath);
+                }
+            }
+
+            WavConverter.ConvertToWav(AudioFiles, wavPath);
+            Dat54Builder.ConstructDat54(AudioFiles, path, AudioBank, SoundSet, audioDataFileName);
+            AWCBuilder.GenerateXML(AudioFiles, audioDirectoryPath, wavPath, AudioBank);
+
+            LuaBuilder.AwcFileName = AudioBank;
+            LuaBuilder.RelFileName = $"{audioDataFileName}.dat54.rel";
+
+            LuaBuilder.GenerateManifest(path, AudioFiles, debugFiles, SoundSet, audioDataFileName);
+
+            MessageBox.Show("Resource has been build!");
+
+            if (!debugFiles)
+            {
+                CleanupDebugFiles(audioDirectoryPath, dataPath, wavPath, audioDataFileName);
             }
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Build failed: {ex.Message}\n\nStack trace:\n{ex.StackTrace}", "Build Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
 
-        WavConverter.ConvertToWav(AudioFiles, wavPath);
-        Dat54Builder.ConstructDat54(AudioFiles, path, AudioBank, SoundSet, audioDataFileName);
-        AWCBuilder.GenerateXML(AudioFiles, audioDirectoryPath, wavPath, AudioBank);
+    private static void CleanupDebugFiles(string audioDirectoryPath, string dataPath, string wavPath, string audioDataFileName)
+    {
+        try
+        {
+            string outputAwcXml = Path.Combine(audioDirectoryPath, "output.awc.xml");
+            if (File.Exists(outputAwcXml))
+            {
+                File.Delete(outputAwcXml);
+            }
 
-        LuaBuilder.AwcFileName = AudioBank;
-        LuaBuilder.RelFileName = $"{audioDataFileName}.dat54.rel";
+            string dat54RelXml = Path.Combine(dataPath, $"{audioDataFileName}.dat54.rel.xml");
+            if (File.Exists(dat54RelXml))
+            {
+                File.Delete(dat54RelXml);
+            }
 
-        LuaBuilder.GenerateManifest(path, AudioFiles, true, SoundSet, audioDataFileName);
+            if (Directory.Exists(wavPath))
+            {
+                Directory.Delete(wavPath, true);
+            }
 
-        MessageBox.Show("Resource has been build!");
+            string awcNametable = Path.Combine(audioDirectoryPath, "awc.nametable");
+            if (File.Exists(awcNametable))
+            {
+                File.Delete(awcNametable);
+            }
+        }
+        catch (Exception)
+        {
+
+        }
     }
 
 }
