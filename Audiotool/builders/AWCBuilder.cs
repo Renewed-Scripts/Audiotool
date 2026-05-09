@@ -45,6 +45,7 @@ public static class AWCBuilder
         GenerateNametable(outputPath, wavPath);
 
         int fails = 0;
+        Exception? lastEx = null;
 
         do
         {
@@ -59,14 +60,35 @@ public static class AWCBuilder
                     break;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                lastEx = ex;
+                try
+                {
+                    string logPath = Path.Combine(outputPath, "awc_build_error.log");
+                    File.AppendAllText(logPath,
+                        $"[attempt {fails + 1}] {DateTime.Now:O}\n" +
+                        $"Type: {ex.GetType().FullName}\n" +
+                        $"Message: {ex.Message}\n" +
+                        $"StackTrace:\n{ex.StackTrace}\n" +
+                        (ex.InnerException != null
+                            ? $"Inner: {ex.InnerException.GetType().FullName}: {ex.InnerException.Message}\n{ex.InnerException.StackTrace}\n"
+                            : "") +
+                        "----\n");
+                }
+                catch { }
                 Thread.Sleep(1000);
                 fails++;
             }
         } while (fails < 5);
 
-        if (fails == 5)
+        if (fails == 5 && lastEx != null)
+        {
+            MessageBox.Show(
+                $"Failed after 5 attempts.\n\n{lastEx.GetType().Name}: {lastEx.Message}\n\nSee awc_build_error.log for full stack trace.",
+                "Unable to build AWC!");
+        }
+        else if (fails == 5)
         {
             MessageBox.Show("Failed to build AWC with Codewalker in 5 attempts! Please manually build", "Unable to build AWC!");
         }
